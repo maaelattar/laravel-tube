@@ -9,5 +9,4 @@ player.on("timeupdate", function() {
         axios.put("/videos/" + window.CURRENT_VIDEO);
         viewLogged = true;
     }
-    console.log(percentagePlayed);
 });
