@@ -30,10 +30,13 @@
                     </a>
 
                     </a>
+                    @auth
                     <div class="navbar-nav">
                         <a class="nav-item nav-link"
                            href="{{ route('home') }}">Home</a>
                     </div>
+                    @endauth
+
                     <button class="navbar-toggler" type="button"
                             data-toggle="collapse"
                             data-target="#navbarSupportedContent"
