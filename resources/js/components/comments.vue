@@ -57,18 +57,15 @@ export default {
             const url = this.comments.next_page_url
                 ? this.comments.next_page_url
                 : `/videos/${this.video.id}/comments`;
-            console.log("comments vue url", url);
             axios
                 .get(url)
                 .then(({ data }) => {
-                    console.log("comments vue", data);
                     this.comments = {
                         ...data,
                         data: [...this.comments.data, ...data.data]
                     };
                 })
                 .catch(error => {
-                    console.log("comments vue errors", error);
                 });
         },
         addComment() {

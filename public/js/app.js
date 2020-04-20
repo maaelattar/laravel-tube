@@ -2093,16 +2093,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this = this;
 
       var url = this.comments.next_page_url ? this.comments.next_page_url : "/videos/".concat(this.video.id, "/comments");
-      console.log("comments vue url", url);
       axios.get(url).then(function (_ref) {
         var data = _ref.data;
-        console.log("comments vue", data);
         _this.comments = _objectSpread({}, data, {
           data: [].concat(_toConsumableArray(_this.comments.data), _toConsumableArray(data.data))
         });
-      })["catch"](function (error) {
-        console.log("comments vue errors", error);
-      });
+      })["catch"](function (error) {});
     },
     addComment: function addComment() {
       var _this2 = this;
@@ -34446,16 +34442,12 @@ Vue.component("channel-uploads", {
         form.append("title", video.name);
         return axios.post("/channels/".concat(_this.channel.id, "/videos"), form, {
           onUploadProgress: function onUploadProgress(event) {
-            console.log("event loaded", event.loaded, "event total", event.total);
-            console.log("this.progress", _this.progress);
             _this.progress[video.name] = Math.ceil(event.loaded / event.total * 100);
-            console.log("this.progress", _this.progress);
 
             _this.$forceUpdate();
           }
         }).then(function (_ref) {
           var data = _ref.data;
-          console.log("channel-uploads data", data);
           _this.uploads = [].concat(_toConsumableArray(_this.uploads), [data]);
         });
       });

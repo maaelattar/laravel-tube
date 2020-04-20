@@ -30,24 +30,16 @@ Vue.component("channel-uploads", {
                 return axios
                     .post(`/channels/${this.channel.id}/videos`, form, {
                         onUploadProgress: event => {
-                            console.log(
-                                "event loaded",
-                                event.loaded,
-                                "event total",
-                                event.total
-                            );
-                            console.log("this.progress", this.progress);
+
 
                             this.progress[video.name] = Math.ceil(
                                 (event.loaded / event.total) * 100
                             );
-                            console.log("this.progress", this.progress);
 
                             this.$forceUpdate();
                         }
                     })
                     .then(({ data }) => {
-                        console.log("channel-uploads data", data);
                         this.uploads = [...this.uploads, data];
                     });
             });
