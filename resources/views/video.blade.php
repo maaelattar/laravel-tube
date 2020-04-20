@@ -15,15 +15,19 @@
                     <div class="card-header">{{ $video->title }}</div>
 
                     <div class="card-body">
-                        <video-js id="video" class="vjs-default-skin" controls
-                                  preload="auto" width="640" height="268">
-                            <source src='{{ asset(Storage::url("videos/{$video->id}/{$video->id}.m3u8")) }}'
-                                    type="application/x-mpegURL">
+
+                        <video-js id="video" class="video-js vjs-theme-city"
+                                  controls preload="auto" width="640"
+                                  height="268">
+
+                            <source
+                                    src='{{ Storage::disk('s3')->url($video->path)}}'>
                         </video-js>
 
                         <div
                              class="d-flex justify-content-between align-items-center">
                             <div>
+
                                 <h4 class="mt-3">
                                     @if ($video->editable())
                                     <input type="text"
@@ -85,6 +89,8 @@
                     @if ($video->editable())
                 </form>
                 @endif
+                <comments :video="{{ $video }}"></comments>
+
             </div>
         </div>
     </div>
@@ -92,7 +98,9 @@
 @endsection
 
 @section('styles')
-<link href="https://vjs.zencdn.net/7.4.1/video-js.css" rel="stylesheet">
+<link href="https://vjs.zencdn.net/7.7.5/video-js.css" rel="stylesheet" />
+<link href="https://unpkg.com/@videojs/themes@1/dist/city/index.css"
+      rel="stylesheet" />
 <style>
     .vjs-default-skin {
         width: 100%;
@@ -118,7 +126,7 @@
 @endsection
 
 @section('scripts')
-<script src='https://vjs.zencdn.net/7.5.4/video.js'></script>
+<script src="https://vjs.zencdn.net/7.7.5/video.js"></script>
 <script>
     window.CURRENT_VIDEO = '{{ $video->id }}'
 </script>

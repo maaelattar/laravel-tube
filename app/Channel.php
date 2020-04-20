@@ -9,6 +9,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class Channel extends Model implements HasMedia
 {
     use InteractsWithMedia;
+
     public function user()
     {
         return $this->belongsTo(User::class);

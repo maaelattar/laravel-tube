@@ -3,9 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Channel;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
-use App\Jobs\Videos\ConvertForStreaming;
 use App\Jobs\Videos\CreateVideoThumbnail;
 
 class UploadVideoController extends Controller
@@ -19,14 +16,15 @@ class UploadVideoController extends Controller
 
     public function store(Channel $channel)
     {
+
+        request()->validate(['video' => 'mimes:mp4,mov,ogg,qt | max:30000']);
+
         $video = $channel->videos()->create([
             'title' => request()->title,
-            'path' => request()->video->store("channels/{$channel->id}")
+            'path' => request()->video->store("channels/{$channel->id}", 's3')
         ]);
 
         $this->dispatch(new CreateVideoThumbnail($video));
-
-        $this->dispatch(new ConvertForStreaming($video));
 
         return $video;
     }

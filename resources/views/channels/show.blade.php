@@ -7,9 +7,11 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     {{ $channel->name }}
-
+                    @if ($channel->editable())
                     <a href="{{ route('channel.upload', $channel->id) }}">Upload
                         Videos</a>
+                    @endif
+
                 </div>
 
                 <div class="card-body">
@@ -119,6 +121,51 @@
                         @if($channel->editable())
                     </form>
                     @endif
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    Videos
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table">
+                        <thead>
+                            <th>Image</th>
+                            <th>Title</th>
+                            <th>Views</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            @foreach($videos as $video)
+                            <tr>
+                                <td>
+                                    <img width="40px" height="40px"
+                                         src="{{ $video->thumbnail }}" alt="">
+                                </td>
+                                <td>
+                                    {{ $video->title }}
+                                </td>
+                                <td>
+                                    {{ $video->views }}
+                                </td>
+
+                                <td>
+                                    <a href="{{ route('videos.show', $video->id) }}"
+                                       class="btn btn-sm btn-info">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+                    <div class="row justify-content-center">
+                        {{ $videos->links() }}
+                    </div>
                 </div>
             </div>
         </div>

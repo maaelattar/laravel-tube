@@ -3,6 +3,7 @@
 @section('content')
 <div class="container-fluid">
     <div class="row justify-content-center">
+
         <channel-uploads :channel="{{ $channel }}" inline-template>
             <div class="col-md-8">
                 <div class="card p-3 d-flex justify-content-center align-items-center"
@@ -16,7 +17,8 @@
 
                     <input type="file" multiple id="video-files"
                            style="display: none;" ref="videos" @change="upload">
-                    <p class="text-center">Upload Videos</p>
+                    <p class="lead text-center">Upload Videos</p>
+                    <p class="text-center">Maximum allowed file size is 30MB</p>
                 </div>
 
                 <div class="card p-3" v-else>
@@ -24,10 +26,10 @@
                         <div class="progress mb-3">
                             <div class="progress-bar progress-bar-striped progress-bar-animated "
                                  role="progressbar"
-                                 :style="{ width: `${video.percentage || progress[video.name]}%` }"
+                                 :style="{ width: `${ progress[video.name]}%` }"
                                  aria-valuenow="50" aria-valuemin="0"
                                  aria-valuemax="100">
-                                @{{ video.percentage ? video.percentage === 100 ? 'Video Processing completed.' : 'Processing' : 'Uploading' }}
+                                @{{ progress[video.name] == 100  || video.thumbnail ? 'Uploaded' : 'Uploading' }}
                             </div>
                         </div>
                         <div class="row">
@@ -36,18 +38,18 @@
                                 <div v-if="!video.thumbnail"
                                      class="d-flex justify-content-center align-items-center"
                                      style="height: 180px; color: white; font-size: 18px; background: #808080;">
-                                    Loading thumbnail ...
+                                    Loading data from the server...
                                 </div>
                                 <img v-else :src="video.thumbnail"
                                      style="width: 100%;" alt="">
                             </div>
 
                             <div class="col-md-4">
-                                <a v-if="video.percentage && video.percentage === 100"
-                                   target="_blank"
+                                <a v-if="video.title" target="_blank"
                                    :href="`/videos/${video.id}`">
-                                    @{{ video.title }}
+                                    @{{ video.title}}
                                 </a>
+
                                 <h4 v-else class="text-center">
                                     @{{ video.title || video.name }}
                                 </h4>

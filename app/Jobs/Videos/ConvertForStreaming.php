@@ -5,6 +5,7 @@ namespace App\Jobs\Videos;
 use App\Video;
 use FFMpeg\Format\Video\X264;
 use Illuminate\Bus\Queueable;
+use FFMpeg\Coordinate\Dimension;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -24,6 +25,7 @@ class ConvertForStreaming implements ShouldQueue
      */
     public function __construct(Video $video)
     {
+        dd($this->video, '', $video);
         $this->video = $video;
     }
 
@@ -32,33 +34,29 @@ class ConvertForStreaming implements ShouldQueue
      *
      * @return void
      */
+
     public function handle()
     {
         $low = (new X264('aac'))->setKiloBitrate(100);
         $mid = (new X264('aac'))->setKiloBitrate(250);
         $high = (new X264('aac'))->setKiloBitrate(500);
-        FFMpeg::fromDisk('local')
+        FFMpeg::fromDisk('s3')
             ->open($this->video->path)
             ->exportForHLS()
-            ->onProgress(function ($percentage) {;;
-                print_r("\nround percentage" . round($percentage));
+            ->toDisk('s3')
+            ->onProgress(function ($percentage) {
                 $this->video->update(['percentage' => round($percentage)]);
             })
             ->addFormat($low)
             ->addFormat($mid)
             ->addFormat($high)
-            ->save("public/videos/{$this->video->id}/{$this->video->id}.m3u8");
+            ->save("videos/{$this->video->id}/{$this->video->id}.m3u8");
     }
 
-    public function failed(\Exception $exception)
+
+
+
+    public function failed()
     {
-        //Log::debug('Failed');
-        // Log::debug($exception);
-
-        // Will print From Construct to the log
-        //  Log::debug($this->fromConstruct);
-
-        // Will print empty value (null) to the log
-        //  Log::debug($this->fromHandle);
     }
 }

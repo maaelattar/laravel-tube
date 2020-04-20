@@ -33,15 +33,15 @@ class CreateVideoThumbnail implements ShouldQueue
      */
     public function handle()
     {
-        FFMpeg::fromDisk('local')
+        FFMpeg::fromDisk('s3')
             ->open($this->video->path)
             ->getFrameFromSeconds(1)
             ->export()
-            ->toDisk('local')
-            ->save("public/thumbnails/{$this->video->id}.png");
+            ->toDisk('s3')
+            ->save("thumbnails/{$this->video->id}.png");
 
         $this->video->update([
-            'thumbnail' => Storage::url("public/thumbnails/{$this->video->id}.png")
+            'thumbnail' => Storage::url("thumbnails/{$this->video->id}.png")
         ]);
     }
 }

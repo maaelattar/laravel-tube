@@ -28,6 +28,12 @@
                     <a class="navbar-brand" href="{{ url('/') }}">
                         {{ config('app.name', 'Laravel') }}
                     </a>
+
+                    </a>
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link"
+                           href="{{ route('home') }}">Home</a>
+                    </div>
                     <button class="navbar-toggler" type="button"
                             data-toggle="collapse"
                             data-target="#navbarSupportedContent"
